@@ -1,0 +1,16 @@
+{
+  "name": "brandvox-ai-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BrandVox AI root configurations - boots client and server in workspace environments using Yarn commands",
+  "scripts": {
+    "install-all": "yarn --cwd client install && yarn --cwd server install",
+    "dev-server": "yarn --cwd server start",
+    "dev-client": "yarn --cwd client dev",
+    "dev": "concurrently \"yarn dev-server\" \"yarn dev-client\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "license": "UNLICENSED"
+}

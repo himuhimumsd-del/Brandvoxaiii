@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-darkBg text-white font-sans antialiased overflow-x-hidden;
+    background-color: #0F0F0F;
+  }
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0F0F0F;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #242424;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6C5CE7;
+}
+
+/* Glassmorphism utility classes */
+.glass {
+  background: rgba(26, 26, 26, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-premium {
+  background: rgba(26, 26, 26, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Custom border-colors */
+.premium-border {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Text glow styles */
+.text-glow {
+  text-shadow: 0 0 10px rgba(108, 92, 231, 0.4);
+}
+
+/* Animated gradient backgrounds */
+@keyframes gradientBg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-gradient {
+  background: linear-gradient(-45deg, #0F0F0F, #1A1A1A, #242424, #120A2E);
+  background-size: 400% 400%;
+  animation: gradientBg 15s ease infinite;
+}
+
+.purple-glow-gradient {
+  background: radial-gradient(circle at 50% 50%, rgba(108, 92, 231, 0.15) 0%, rgba(15, 15, 15, 0) 70%);
+}
+
+/* Hover scales and animations */
+.hover-scale {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-scale:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(108, 92, 231, 0.15);
+}
