@@ -14,8 +14,7 @@ if (process.env.FAL_KEY) {
  * @param {Object} params - Generation options
  * @returns {Promise<Object>} - Contains video_url, seed, and other output parameters
  */
-async function generateVideo({ endpoint, prompt, duration, resolution, aspect_ratio, generate_audio, image_url }) {
-  // Construct standard input payload for fal.ai endpoints
+async function generateVideo({ endpoint, prompt, duration, resolution, aspect_ratio, generate_audio, image_url, webhookUrl, generationId }) {
   const input = {
     prompt,
     duration: String(duration),
@@ -23,43 +22,27 @@ async function generateVideo({ endpoint, prompt, duration, resolution, aspect_ra
     generate_audio: !!generate_audio
   };
 
-  // Only seed the input resolution if specified
-  if (resolution) {
-    input.resolution = resolution;
-  }
-
-  // Include optional source image for Image-to-Video models
-  if (image_url) {
-    input.image_url = image_url;
-  }
+  if (resolution) input.resolution = resolution;
+  if (image_url) input.image_url = image_url;
 
   try {
-    console.log(`[falService] Dispatching request to endpoint: ${endpoint}`);
-    console.log('[falService] Request Payload:', JSON.stringify(input, null, 2));
+    console.log(`[falService] Dispatching queue request to endpoint: ${endpoint}`);
 
-    // Submit request to the dynamic endpoint
-    const result = await fal.subscribe(endpoint, {
-      input,
-      logs: true,
-      onQueueUpdate: (update) => {
-        console.log(`[falService] Queue state for execution: status=${update.status}`);
-      }
-    });
-
-    console.log('[falService] Response Data:', JSON.stringify(result.data, null, 2));
-
-    // Support multiple format configurations from fal models
-    const videoUrl = result.data?.video?.url || result.data?.file?.url || result.data?.outputs?.[0]?.url;
-    const seed = result.data?.seed || null;
-
-    if (!videoUrl) {
-      throw new Error('fal.ai did not return a valid video URL in outputs.');
+    // Check if we want to use webhooks
+    if (webhookUrl) {
+      const result = await fal.queue.submit(endpoint, {
+        input,
+        webhookUrl: `${webhookUrl}?generationId=${generationId}`
+      });
+      console.log(`[falService] Submitted to queue, request ID:`, result.request_id);
+      return { request_id: result.request_id };
+    } else {
+      // Fallback to subscribe if no webhook
+      const result = await fal.subscribe(endpoint, { input });
+      const videoUrl = result.data?.video?.url || result.data?.file?.url || result.data?.outputs?.[0]?.url;
+      if (!videoUrl) throw new Error('fal.ai did not return a valid video URL.');
+      return { video_url: videoUrl, seed: result.data?.seed };
     }
-
-    return {
-      video_url: videoUrl,
-      seed: seed
-    };
   } catch (error) {
     console.error('[falService] Generation invocation failed:', error);
     throw new Error(error.message || 'API request to fal.ai failed');

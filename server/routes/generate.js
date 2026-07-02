@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/auth');
-const rateLimitMiddleware = require('../middleware/rateLimit');
+const { generationLimiter } = require('../middleware/rateLimit');
 const supabase = require('../lib/supabase');
 const falService = require('../services/falService');
 const creditService = require('../services/creditService');
@@ -12,7 +12,7 @@ const { createNotification } = require('../services/notificationService');
  * POST /api/generate
  * Dispatches an asynchronous AI video generation job
  */
-router.post('/', authMiddleware, rateLimitMiddleware, async (req, res) => {
+router.post('/', authMiddleware, generationLimiter, async (req, res) => {
   const {
     prompt,
     model_id,
@@ -123,6 +123,8 @@ router.post('/', authMiddleware, rateLimitMiddleware, async (req, res) => {
 
         console.log(`[BackgroundWorker] Executing fal.ai job for gen: ${generation.id}`);
 
+        const webhookUrl = `${process.env.API_URL || 'http://localhost:5000'}/api/generate/webhook`;
+
         const result = await falService.generateVideo({
           endpoint: model.fal_endpoint,
           prompt: prompt,
@@ -130,30 +132,37 @@ router.post('/', authMiddleware, rateLimitMiddleware, async (req, res) => {
           resolution: resolution || model.supported_resolutions?.[0],
           aspect_ratio: aspect_ratio || model.supported_aspects?.[0],
           generate_audio: selectedAudio,
-          image_url: image_url
+          image_url: image_url,
+          webhookUrl,
+          generationId: generation.id
         });
 
-        // Set high quality mock thumbnail or screenshot if required
-        const placeholderThumbnail = 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500';
+        if (result.request_id) {
+          // Store request ID in DB to track it
+          await supabase
+            .from('generations')
+            .update({ fal_request_id: result.request_id })
+            .eq('id', generation.id);
+        } else if (result.video_url) {
+          // Synchronous fallback success
+          const placeholderThumbnail = 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500';
+          await supabase
+            .from('generations')
+            .update({
+              status: 'completed',
+              video_url: result.video_url,
+              thumbnail_url: placeholderThumbnail,
+              updated_at: new Date().toISOString()
+            })
+            .eq('id', generation.id);
 
-        // Update DB upon complete success
-        await supabase
-          .from('generations')
-          .update({
-            status: 'completed',
-            video_url: result.video_url,
-            thumbnail_url: placeholderThumbnail,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', generation.id);
-
-        // Notify user in real-time
-        await createNotification(
-          req.user.id,
-          'Video Ready! 🎬',
-          `Your video generation with "${model.name}" has completed successfully.`,
-          'success'
-        );
+          await createNotification(
+            req.user.id,
+            'Video Ready! 🎬',
+            `Your video generation with "${model.name}" has completed successfully.`,
+            'success'
+          );
+        }
 
       } catch (err) {
         console.error(`[BackgroundWorker] Generation failed for: ${generation.id}`, err);
@@ -256,6 +265,100 @@ router.get('/', authMiddleware, async (req, res) => {
   } catch (err) {
     console.error('Failed to list generations:', err);
     res.status(500).json({ error: 'Failed to retrieve videos.' });
+  }
+});
+
+/**
+ * POST /api/generate/webhook
+ * fal.ai calls this when generation is complete
+ */
+router.post('/webhook', async (req, res) => {
+  try {
+    const { generationId } = req.query;
+    const { status, payload, error } = req.body;
+    
+    if (!generationId) return res.status(400).send('No generationId');
+
+    const { data: gen } = await supabase
+      .from('generations')
+      .select('*')
+      .eq('id', generationId)
+      .single();
+
+    if (!gen) return res.status(404).send('Not Found');
+
+    if (status === 'OK') {
+      const videoUrl = payload?.video?.url || payload?.file?.url || payload?.outputs?.[0]?.url;
+      const placeholderThumbnail = 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500';
+
+      await supabase
+        .from('generations')
+        .update({
+          status: 'completed',
+          video_url: videoUrl,
+          thumbnail_url: placeholderThumbnail,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', generationId);
+
+      await createNotification(
+        gen.user_id,
+        'Video Ready! 🎬',
+        `Your video generation with "${gen.model_name}" has completed successfully.`,
+        'success'
+      );
+      
+      const { sendVideoReadyEmail } = require('../services/emailService');
+      const { data: userProfile } = await supabase.from('profiles').select('email').eq('id', gen.user_id).single();
+      if (userProfile && userProfile.email) {
+         await sendVideoReadyEmail(userProfile.email, gen.title);
+      }
+    } else if (status === 'ERROR') {
+      // Refund
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('credits')
+        .eq('id', gen.user_id)
+        .single();
+
+      if (profile) {
+        await supabase
+          .from('profiles')
+          .update({ credits: parseFloat(profile.credits || 0) + gen.cost })
+          .eq('id', gen.user_id);
+
+        await supabase
+          .from('transactions')
+          .insert({
+            user_id: gen.user_id,
+            type: 'refund',
+            amount: gen.cost,
+            description: `Refund for failed generation ${generationId}`,
+            generation_id: generationId
+          });
+      }
+
+      await supabase
+        .from('generations')
+        .update({
+          status: 'failed',
+          error_message: error || 'Generation failed on fal.ai',
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', generationId);
+
+      await createNotification(
+        gen.user_id,
+        'Generation Failed ❌',
+        `Unable to complete video. Credits refunded.`,
+        'error'
+      );
+    }
+
+    res.status(200).send('OK');
+  } catch (err) {
+    console.error('Webhook processing failed:', err);
+    res.status(500).send('Internal Server Error');
   }
 });
 
