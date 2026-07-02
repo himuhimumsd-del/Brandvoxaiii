@@ -1,0 +1,20 @@
+[build]
+  # Build backend dependencies, then build the frontend
+  command = "cd server && yarn install && cd ../client && yarn install && yarn build"
+  publish = "client/dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  # Send API requests to the Netlify Serverless Function
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[[redirects]]
+  # Serve React SPA router for all other requests
+  from = "/*"
+  to = "/index.html"
+  status = 200

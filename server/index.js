@@ -77,11 +77,16 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start listen loop
-app.listen(PORT, () => {
-  console.log('==================================================');
-  console.log(` BRANDVOX AI — BACKEND SERVER BOOTED SUCCESSFULLY`);
-  console.log(` Port:         ${PORT}`);
-  console.log(` Target Client: ${process.env.CLIENT_URL || 'http://localhost:5173'}`);
-  console.log('==================================================');
-});
+// Only listen locally, Vercel will use the exported app
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log('==================================================');
+    console.log(` BRANDVOX AI — BACKEND SERVER BOOTED SUCCESSFULLY`);
+    console.log(` Port:         ${PORT}`);
+    console.log(` Target Client: ${process.env.CLIENT_URL || 'http://localhost:5173'}`);
+    console.log('==================================================');
+  });
+}
+
+// Export the Express API for Vercel Serverless Functions
+module.exports = app;
