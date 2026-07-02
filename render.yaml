@@ -19,14 +19,7 @@ services:
         sync: false
       - key: FAL_KEY
         sync: false
-      - key: PHONEPE_ENV
-        value: PROD
-      - key: PHONEPE_MERCHANT_ID
-        sync: false
-      - key: PHONEPE_SALT_KEY
-        sync: false
-      - key: PHONEPE_SALT_INDEX
-        sync: false
+
 
   # Frontend Static Site
   - type: web
@@ -45,4 +38,8 @@ services:
       - key: VITE_SUPABASE_URL
         sync: false
       - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: VITE_UPI_ID
+        sync: false
+      - key: VITE_PAYEE_NAME
         sync: false
