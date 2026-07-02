@@ -12,5 +12,11 @@
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "main": "index.js",
+  "repository": "https://github.com/himuhimumsd-del/Brandvoxaiii.git",
+  "author": "Himanshu <himuhimumsd@gmail.com>",
+  "dependencies": {
+    "serverless-http": "^4.0.0"
+  }
 }

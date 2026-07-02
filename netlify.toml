@@ -1,6 +1,6 @@
 [build]
   # Build backend dependencies, then build the frontend
-  command = "cd server && yarn install && cd ../client && yarn install && yarn build"
+  command = "yarn install && cd server && yarn install && cd ../client && yarn install && yarn build"
   publish = "client/dist"
   functions = "netlify/functions"
 
