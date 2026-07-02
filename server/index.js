@@ -77,8 +77,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Only listen locally, Vercel will use the exported app
-if (process.env.NODE_ENV !== 'production') {
+// Only listen locally, Vercel/Netlify will use the exported app
+// We check for NETLIFY or AWS_LAMBDA_FUNCTION_VERSION to prevent crash on 502
+if (process.env.NODE_ENV !== 'production' && !process.env.NETLIFY && !process.env.AWS_LAMBDA_FUNCTION_VERSION) {
   app.listen(PORT, () => {
     console.log('==================================================');
     console.log(` BRANDVOX AI — BACKEND SERVER BOOTED SUCCESSFULLY`);
@@ -88,5 +89,5 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// Export the Express API for Vercel Serverless Functions
+// Export the Express API for Serverless Functions
 module.exports = app;
