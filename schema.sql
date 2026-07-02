@@ -97,9 +97,7 @@ create table public.notifications (
 insert into public.models (id, name, provider, fal_endpoint, description, price_per_second, max_duration, supported_resolutions, supported_aspects, supports_audio, supports_image_input, is_active, is_featured, badge, created_at) values
 ('seedance-2-fast', 'Seedance 2.0 Fast', 'ByteDance', 'bytedance/seedance-2.0/fast/text-to-video', 'Fastest cinematic video with native audio', 45.00, 15, array['480p','720p'], array['16:9','9:16','1:1','4:3'], true, false, true, false, 'Fastest', now()),
 ('seedance-2', 'Seedance 2.0', 'ByteDance', 'bytedance/seedance-2.0/text-to-video', 'Highest quality cinematic video generation', 60.00, 15, array['480p','720p'], array['16:9','9:16','1:1','4:3'], true, false, true, true, 'Quality', now()),
-('seedance-2-i2v', 'Seedance 2.0 Image-to-Video', 'ByteDance', 'bytedance/seedance-2.0/image-to-video', 'Animate any image into cinematic video', 60.00, 15, array['480p','720p'], array['16:9','9:16','1:1','4:3'], true, true, true, false, 'Image→Video', now()),
-('wan-2-2', 'WAN 2.2', 'Alibaba', 'fal-ai/wan/v2.2-a14b/text-to-video', 'Open source, high quality, most affordable', 15.00, 10, array['480p','720p'], array['16:9','9:16','1:1'], false, false, true, false, 'Budget', now()),
-('wan-2-2-i2v', 'WAN 2.2 Image-to-Video', 'Alibaba', 'fal-ai/wan-i2v', 'WAN image animation — affordable option', 15.00, 10, array['480p','720p'], array['16:9','9:16'], false, true, true, false, 'Budget', now());
+('seedance-2-i2v', 'Seedance 2.0 Image-to-Video', 'ByteDance', 'bytedance/seedance-2.0/image-to-video', 'Animate any image into cinematic video', 60.00, 15, array['480p','720p'], array['16:9','9:16','1:1','4:3'], true, true, true, false, 'Image→Video', now());
 
 -- Enable Row Level Security (RLS)
 alter table public.profiles enable row level security;
