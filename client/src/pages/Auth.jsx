@@ -8,7 +8,7 @@ import { Film, Eye, EyeOff, Sparkles, ChevronLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function Auth() {
-  const { login, signUp, loginWithGoogle, sendPasswordReset, user } = useAuth();
+  const { login, signUp, sendPasswordReset, user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -226,29 +226,7 @@ export default function Auth() {
           </Button>
         </form>
 
-        {/* Divider */}
-        {mode !== 'forgot' && (
-          <>
-            <div className="relative my-6 select-none flex items-center justify-center">
-              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/5"></div></div>
-              <span className="relative px-3 bg-surface text-[10px] font-black uppercase text-white/20 tracking-widest">
-                or
-              </span>
-            </div>
 
-            {/* Google OAuth Provider */}
-            <button
-              onClick={loginWithGoogle}
-              disabled={loading}
-              className="w-full inline-flex items-center justify-center space-x-3.5 py-3.5 bg-surface-elevated hover:bg-surface-hover border border-white/10 rounded-lg text-xs font-extrabold uppercase tracking-wider text-white active:scale-[0.98] transition-all cursor-pointer shadow-premium"
-            >
-              <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.44 0-6.228-2.788-6.228-6.228 0-3.44 2.788-6.228 6.228-6.228 1.54 0 2.943.557 4.036 1.482l3.11-3.11C18.918 1.639 15.829 1 12.24 1 5.48 1 0 6.48 0 13.24s5.48 12.24 12.24 12.24c6.76 0 11.76-4.76 11.76-11.76 0-.76-.08-1.52-.2-2.24H12.24z" />
-              </svg>
-              <span>Continue with Google</span>
-            </button>
-          </>
-        )}
 
         {/* Bottom helper mode switchers */}
         <div className="text-center mt-6 text-xs text-white/40 font-semibold">
