@@ -60,7 +60,9 @@ app.get('/api/health', (req, res) => {
     platform: 'BrandVox AI',
     timestamp: new Date().toISOString(),
     upiConfigured: !!process.env.UPI_ID,
-    falConfigured: !!process.env.FAL_KEY
+    falConfigured: !!process.env.FAL_KEY,
+    sbUrlLength: process.env.SUPABASE_URL ? process.env.SUPABASE_URL.length : 0,
+    sbKeyLength: process.env.SUPABASE_SERVICE_ROLE_KEY ? process.env.SUPABASE_SERVICE_ROLE_KEY.length : 0
   });
 });
 
