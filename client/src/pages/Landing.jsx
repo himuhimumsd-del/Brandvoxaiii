@@ -33,9 +33,9 @@ export default function Landing() {
   ];
 
   const modelsList = [
-    { name: 'WAN 2.2', price: '15 🪙', provider: 'Alibaba', badge: 'Budget Option', desc: 'Open source, high resolution, and extremely affordable.' },
-    { name: 'Seedance Fast', price: '45 🪙', provider: 'ByteDance', badge: 'Fastest Render', desc: 'Blazing fast generations with native audio capability.' },
-    { name: 'Seedance Quality', price: '60 🪙', provider: 'ByteDance', badge: 'Premium Quality', desc: 'Cinematic video generations with pristine realism.' }
+    { name: 'WAN 2.2', price: '1 🪙', provider: 'Alibaba', badge: 'Budget Option', desc: 'Open source, high resolution, and extremely affordable.' },
+    { name: 'Seedance Fast', price: '3 🪙', provider: 'ByteDance', badge: 'Fastest Render', desc: 'Blazing fast generations with native audio capability.' },
+    { name: 'Seedance Quality', price: '5 🪙', provider: 'ByteDance', badge: 'Premium Quality', desc: 'Cinematic video generations with pristine realism.' }
   ];
 
   // Approved INR Packages
