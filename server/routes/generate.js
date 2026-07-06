@@ -123,7 +123,8 @@ router.post('/', authMiddleware, generationLimiter, async (req, res) => {
 
         console.log(`[BackgroundWorker] Executing fal.ai job for gen: ${generation.id}`);
 
-        const webhookUrl = `${process.env.RENDER_EXTERNAL_URL || process.env.API_URL || 'http://localhost:5000'}/api/generate/webhook`;
+        const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : null;
+        const webhookUrl = `${process.env.RENDER_EXTERNAL_URL || vercelUrl || process.env.API_URL || 'http://localhost:5000'}/api/generate/webhook`;
 
         const result = await falService.generateVideo({
           endpoint: model.fal_endpoint,
