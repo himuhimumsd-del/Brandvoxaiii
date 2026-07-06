@@ -33,17 +33,17 @@ export default function Landing() {
   ];
 
   const modelsList = [
-    { name: 'WAN 2.2', price: '₹15', provider: 'Alibaba', badge: 'Budget Option', desc: 'Open source, high resolution, and extremely affordable.' },
-    { name: 'Seedance Fast', price: '₹45', provider: 'ByteDance', badge: 'Fastest Render', desc: 'Blazing fast generations with native audio capability.' },
-    { name: 'Seedance Quality', price: '₹60', provider: 'ByteDance', badge: 'Premium Quality', desc: 'Cinematic video generations with pristine realism.' }
+    { name: 'WAN 2.2', price: '15 🪙', provider: 'Alibaba', badge: 'Budget Option', desc: 'Open source, high resolution, and extremely affordable.' },
+    { name: 'Seedance Fast', price: '45 🪙', provider: 'ByteDance', badge: 'Fastest Render', desc: 'Blazing fast generations with native audio capability.' },
+    { name: 'Seedance Quality', price: '60 🪙', provider: 'ByteDance', badge: 'Premium Quality', desc: 'Cinematic video generations with pristine realism.' }
   ];
 
   // Approved INR Packages
   const pricingPacks = [
-    { id: 'starter', name: 'Starter Pack', price: '₹99', credits: '₹99.00', bonus: null, desc: 'Perfect for beginners starting to explore.', features: ['₹99 Credit Balance', 'WAN & Seedance Access', 'Watermarked Outputs'] },
-    { id: 'creator', name: 'Creator Pack', price: '₹249', credits: '₹274.00', bonus: '10% Bonus', desc: 'Most popular option for designers.', features: ['₹274 Credit Balance', 'Google OAuth Signup', 'Watermarked Outputs', 'Priority Generations Queue'] },
-    { id: 'pro', name: 'Pro Pack', price: '₹499', credits: '₹574.00', bonus: '15% Bonus', desc: 'Unlock premium high-resolution options.', features: ['₹574 Credit Balance', 'All features included', '24/7 Priority Support'] },
-    { id: 'studio', name: 'Studio Pack', price: '₹999', credits: '₹1,199.00', bonus: '20% Bonus', desc: 'Ultimate package for agency work.', features: ['₹1,199 Credit Balance', 'Pristine 1080p outputs', 'Custom aspect integrations', 'Immediate priority execution'] }
+    { id: 'starter', name: 'Starter Pack', price: '₹99', credits: '99.00 🪙', bonus: null, desc: 'Perfect for beginners starting to explore.', features: ['99.00 🪙 Balance', 'WAN & Seedance Access', 'Watermarked Outputs'] },
+    { id: 'creator', name: 'Creator Pack', price: '₹249', credits: '274.00 🪙', bonus: '10% Bonus', desc: 'Most popular option for designers.', features: ['274.00 🪙 Balance', 'Google OAuth Signup', 'Watermarked Outputs', 'Priority Generations Queue'] },
+    { id: 'pro', name: 'Pro Pack', price: '₹499', credits: '574.00 🪙', bonus: '15% Bonus', desc: 'Unlock premium high-resolution options.', features: ['574.00 🪙 Balance', 'All features included', '24/7 Priority Support'] },
+    { id: 'studio', name: 'Studio Pack', price: '₹999', credits: '1,199.00 🪙', bonus: '20% Bonus', desc: 'Ultimate package for agency work.', features: ['1,199.00 🪙 Balance', 'Pristine 1080p outputs', 'Custom aspect integrations', 'Immediate priority execution'] }
   ];
 
   const testimonials = [
@@ -79,7 +79,7 @@ export default function Landing() {
             Sign In
           </Button>
           <Button variant="primary" size="sm" onClick={() => navigate('/auth')} className="shadow-premium">
-            Start Free (₹50)
+            Start Free (50 🪙)
           </Button>
         </div>
 
@@ -104,7 +104,7 @@ export default function Landing() {
               Sign In
             </Button>
             <Button variant="primary" onClick={() => { setMobileMenuOpen(false); navigate('/auth'); }}>
-              Start Free (₹50)
+              Start Free (50 🪙)
             </Button>
           </div>
         </div>
@@ -263,7 +263,7 @@ export default function Landing() {
             Straightforward Credit Packages
           </h2>
           <p className="text-xs md:text-sm text-white/50 mt-3 leading-relaxed font-medium">
-            UPI, cards, netbanking supported instantly in INR. Signup now to receive ₹50.00 welcome credits.
+            UPI, cards, netbanking supported instantly in INR. Signup now to receive 50.00 🪙 welcome credits.
           </p>
         </div>
 

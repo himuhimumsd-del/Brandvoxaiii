@@ -15,12 +15,12 @@ export function cn(...inputs) {
  */
 export function formatCredits(val) {
   const numericVal = parseFloat(val || 0);
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
+  const formatted = new Intl.NumberFormat('en-IN', {
+    style: 'decimal',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   }).format(numericVal);
+  return `${formatted} 🪙`;
 }
 
 /**

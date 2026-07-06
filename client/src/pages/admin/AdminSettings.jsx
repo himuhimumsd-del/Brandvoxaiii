@@ -95,7 +95,7 @@ export default function AdminSettings() {
             required
           />
           <Input
-            label="Welcome Signup Credits (₹)"
+            label="Welcome Signup Credits (🪙)"
             type="number"
             value={welcomeCredits}
             onChange={(e) => setWelcomeCredits(e.target.value)}

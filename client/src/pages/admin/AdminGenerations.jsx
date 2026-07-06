@@ -37,7 +37,7 @@ export default function AdminGenerations() {
       try {
         const res = await api.post(`/admin/generations/${genId}/refund`);
         if (res.data.success) {
-          toast.success(`Refunded ₹${res.data.refundedAmount} credits to user profile successfully.`);
+          toast.success(`Refunded ${res.data.refundedAmount} 🪙 to user profile successfully.`);
           fetchGenerations();
         }
       } catch (err) {

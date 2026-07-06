@@ -63,7 +63,7 @@ export default function AdminCredits() {
       });
 
       if (res.data.success) {
-        toast.success(`Successfully dispatched ₹${bulkAmount} bonus to ${res.data.grantedUsers} users!`);
+        toast.success(`Successfully dispatched ${bulkAmount} 🪙 bonus to ${res.data.grantedUsers} users!`);
         setBulkAmount('');
         setBulkReason('');
         fetchCreditsData();

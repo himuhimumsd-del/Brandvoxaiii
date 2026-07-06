@@ -62,7 +62,7 @@ export default function Auth() {
           throw new Error('You must agree to the Terms and Privacy Policy to continue.');
         }
         await signUp(email, password, fullName);
-        toast.success('Registration complete! Welcome to BrandVox AI (₹50 credited).');
+        toast.success('Registration complete! Welcome to BrandVox AI (50 🪙 credited).');
         navigate('/studio');
       } else if (mode === 'forgot') {
         if (!email) {

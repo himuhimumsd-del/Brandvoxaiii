@@ -46,12 +46,12 @@ export default function Credits() {
     }
   }, [profile?.id]);
 
-  // Approved INR Packages
+  // Approved Packages
   const packages = [
-    { id: 'starter', name: 'Starter Pack', price: 99, credits: 99.00, bonus: null, desc: 'Ideal for trying model motions.', features: ['₹99 Credits Balance', 'Standard WAN 2.2 Access', 'Supports text and image input'] },
-    { id: 'creator', name: 'Creator Pack', price: 249, credits: 274.00, bonus: '10% Bonus', desc: 'Unlock extra rendering experiments.', features: ['₹274 Credits Balance', 'All standard models access', 'Synchronized Native Audio', '24/7 Server status alerts'] },
-    { id: 'pro', name: 'Pro Pack', price: 499, credits: 574.00, bonus: '15% Bonus', desc: 'Pristine assets compiling choice.', features: ['₹574 Credits Balance', 'Watermark-free outputs', 'Priority queue status'] },
-    { id: 'studio', name: 'Studio Pack', price: 999, credits: 1199.00, bonus: '20% Bonus', desc: 'Supreme capacity for studio works.', features: ['₹1,199 Credits Balance', 'Pristine Watermark-Free video player', 'Instant multi-aspect renders', 'Dedicated billing controls'] }
+    { id: 'starter', name: 'Starter Pack', price: 99, credits: 99.00, bonus: null, desc: 'Ideal for trying model motions.', features: ['99.00 🪙 Balance', 'Standard WAN 2.2 Access', 'Supports text and image input'] },
+    { id: 'creator', name: 'Creator Pack', price: 249, credits: 274.00, bonus: '10% Bonus', desc: 'Unlock extra rendering experiments.', features: ['274.00 🪙 Balance', 'All standard models access', 'Synchronized Native Audio', '24/7 Server status alerts'] },
+    { id: 'pro', name: 'Pro Pack', price: 499, credits: 574.00, bonus: '15% Bonus', desc: 'Pristine assets compiling choice.', features: ['574.00 🪙 Balance', 'Watermark-free outputs', 'Priority queue status'] },
+    { id: 'studio', name: 'Studio Pack', price: 999, credits: 1199.00, bonus: '20% Bonus', desc: 'Supreme capacity for studio works.', features: ['1,199.00 🪙 Balance', 'Pristine Watermark-Free video player', 'Instant multi-aspect renders', 'Dedicated billing controls'] }
   ];
 
   const handleOpenCheckout = (pack) => {
@@ -351,7 +351,7 @@ export default function Credits() {
               <div className="flex-grow text-center">
                 <h3 className="text-base font-black uppercase text-white tracking-widest">Pay Using UPI</h3>
                 <span className="text-[9px] font-extrabold uppercase text-purple-300/80 tracking-widest block mt-0.5">
-                  {selectedPack.name} — ₹{selectedPack.price} ({formatCredits(selectedPack.credits)} Credits)
+                  {selectedPack.name} — ₹{selectedPack.price} ({formatCredits(selectedPack.credits)})
                 </span>
               </div>
               <button 
