@@ -123,7 +123,7 @@ router.post('/', authMiddleware, generationLimiter, async (req, res) => {
 
         console.log(`[BackgroundWorker] Executing fal.ai job for gen: ${generation.id}`);
 
-        const webhookUrl = `${process.env.API_URL || 'http://localhost:5000'}/api/generate/webhook`;
+        const webhookUrl = `${process.env.RENDER_EXTERNAL_URL || process.env.API_URL || 'http://localhost:5000'}/api/generate/webhook`;
 
         const result = await falService.generateVideo({
           endpoint: model.fal_endpoint,

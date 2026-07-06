@@ -7,7 +7,9 @@
     "install-all": "yarn --cwd client install && yarn --cwd server install",
     "dev-server": "yarn --cwd server start",
     "dev-client": "yarn --cwd client dev",
-    "dev": "concurrently \"yarn dev-server\" \"yarn dev-client\""
+    "dev": "concurrently \"yarn dev-server\" \"yarn dev-client\"",
+    "render-build": "yarn install-all && yarn --cwd client build",
+    "start": "yarn --cwd server start"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

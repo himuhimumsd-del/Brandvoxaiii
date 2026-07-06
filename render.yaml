@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: brandvox-ai
+    env: node
+    buildCommand: yarn render-build
+    startCommand: yarn start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CLIENT_URL
+        value: "" # Empty means it will allow same-origin implicitly or we can leave it empty, but Render injects RENDER_EXTERNAL_URL anyway
+      - key: API_URL
+        sync: false # User needs to set this if they want, but our code now handles RENDER_EXTERNAL_URL automatically.

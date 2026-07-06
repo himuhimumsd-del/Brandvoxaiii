@@ -64,7 +64,18 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Route fallback for 404
+// Serve static frontend files in production
+if (process.env.NODE_ENV === 'production') {
+  const path = require('path');
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+  
+  // Send all non-API requests to the React app
+  app.get(/^(?!\/api).*/, (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  });
+}
+
+// Route fallback for 404 (API routes)
 app.use((req, res, next) => {
   res.status(404).json({ error: `Cannot ${req.method} ${req.url} - Endpoint not found.` });
 });
@@ -77,9 +88,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Only listen locally, Vercel/Netlify will use the exported app
-// We check for NETLIFY or AWS_LAMBDA_FUNCTION_VERSION to prevent crash on 502
-if (process.env.NODE_ENV !== 'production' && !process.env.NETLIFY && !process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+// Only listen locally or on standard persistent servers (like Render)
+// We check for NETLIFY, VERCEL, or AWS_LAMBDA to prevent crash on serverless
+if (!process.env.NETLIFY && !process.env.AWS_LAMBDA_FUNCTION_VERSION && !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log('==================================================');
     console.log(` BRANDVOX AI — BACKEND SERVER BOOTED SUCCESSFULLY`);
